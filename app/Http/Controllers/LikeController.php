@@ -7,6 +7,19 @@ use Illuminate\Http\Request;
 
 class LikeController extends Controller
 {
+
+    public function LikeIt(Reply $reply)
+    {
+        $reply->like()->create([
+            'user_id' => auth()->id()
+        ]);
+    }
+
+    public function UnLikeIt(Reply $reply)
+    {
+        $reply->like()->where(['user_id', auth()->id()])->first()->delete();
+
+    }
     /**
      * Display a listing of the resource.
      *

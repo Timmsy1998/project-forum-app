@@ -23,3 +23,6 @@ Route::apiResources([
     'category' => CategoryController::class,
     'question/{question}/reply' => ReplyController::class,
 ]);
+
+Route::post('/like/{reply}', 'LikeController@LikeIt');
+Route::delete('/like/{reply}', 'LikeController@UnLikeIt');
