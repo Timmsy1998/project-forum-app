@@ -2220,8 +2220,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -2230,6 +2228,13 @@ __webpack_require__.r(__webpack_exports__);
         password: null
       }
     };
+  },
+  created: function created() {
+    if (User.loggedIn()) {
+      this.$router.push({
+        name: 'forum'
+      });
+    }
   },
   methods: {
     login: function login() {
@@ -2298,8 +2303,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -2312,12 +2315,23 @@ __webpack_require__.r(__webpack_exports__);
       errors: {}
     };
   },
+  created: function created() {
+    if (User.loggedIn()) {
+      this.$router.push({
+        name: 'forum'
+      });
+    }
+  },
   methods: {
     signup: function signup() {
       var _this = this;
 
       axios.post('/api/auth/signup', this.form).then(function (res) {
-        return User.responseAfterLogin(res);
+        User.responseAfterLogin(res);
+
+        _this.$router.push({
+          name: 'forum'
+        });
       })["catch"](function (error) {
         return _this.errors = error.response.data.errors;
       });
@@ -2352,12 +2366,12 @@ var AppStorage = /*#__PURE__*/function () {
   _createClass(AppStorage, [{
     key: "storeToken",
     value: function storeToken(token) {
-      localStorage.setItem('session_token', token);
+      localStorage.setItem('token', token);
     }
   }, {
     key: "storeUser",
     value: function storeUser(user) {
-      localStorage.setItem('username', user);
+      localStorage.setItem('user', user);
     }
   }, {
     key: "store",
@@ -2368,18 +2382,18 @@ var AppStorage = /*#__PURE__*/function () {
   }, {
     key: "clear",
     value: function clear() {
-      localStorage.removeItem('session_token');
-      localStorage.removeItem('username');
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
     }
   }, {
     key: "getToken",
     value: function getToken() {
-      return localStorage.getItem('session_token');
+      return localStorage.getItem('token');
     }
   }, {
     key: "getUser",
     value: function getUser() {
-      return localStorage.getItem('username');
+      return localStorage.getItem('user');
     }
   }]);
 
@@ -2418,7 +2432,7 @@ var Token = /*#__PURE__*/function () {
       var payload = this.payload(token);
 
       if (payload) {
-        payload.iss == "http://localhost/api/auth/login" ? true : false;
+        return payload.iss == "http://localhost:8000/api/auth/login" || "http://localhost:8000/api/auth/signup" ? true : 0;
       }
 
       return false;
@@ -2427,12 +2441,25 @@ var Token = /*#__PURE__*/function () {
     key: "payload",
     value: function payload(token) {
       var payload = token.split('.')[1];
-      console.log(this.decode(payload));
+      return this.decode(payload);
     }
   }, {
     key: "decode",
     value: function decode(payload) {
-      return JSON.parse(atob(payload));
+      if (this.isBase64(payload)) {
+        return JSON.parse(atob(payload));
+      }
+
+      return false;
+    }
+  }, {
+    key: "isBase64",
+    value: function isBase64(str) {
+      try {
+        return btoa(atob(str)).replace(/=/g, "") == str;
+      } catch (err) {
+        return false;
+      }
     }
   }]);
 
@@ -2484,11 +2511,12 @@ var User = /*#__PURE__*/function () {
   }, {
     key: "responseAfterLogin",
     value: function responseAfterLogin(res) {
-      var session_token = res.data.session_token;
-      var username = res.data.username;
+      var access_token = res.data.access_token;
+      var username = res.data.user;
 
-      if (_Token__WEBPACK_IMPORTED_MODULE_0__["default"].isValid(session_token)) {
-        _AppStorage__WEBPACK_IMPORTED_MODULE_1__["default"].store(username, session_token);
+      if (_Token__WEBPACK_IMPORTED_MODULE_0__["default"].isValid(access_token)) {
+        _AppStorage__WEBPACK_IMPORTED_MODULE_1__["default"].store(username, access_token);
+        window.location = '/forum';
       }
     }
   }, {
@@ -2497,7 +2525,7 @@ var User = /*#__PURE__*/function () {
       var storedToken = _AppStorage__WEBPACK_IMPORTED_MODULE_1__["default"].getToken();
 
       if (storedToken) {
-        session_token.isValid(storedToken) ? true : false;
+        return _Token__WEBPACK_IMPORTED_MODULE_0__["default"].isValid(storedToken) ? true : this.logout();
       }
 
       return false;
@@ -2511,6 +2539,7 @@ var User = /*#__PURE__*/function () {
     key: "logout",
     value: function logout() {
       _AppStorage__WEBPACK_IMPORTED_MODULE_1__["default"].clear();
+      window.location = '/forum';
     }
   }, {
     key: "name",
@@ -2523,9 +2552,19 @@ var User = /*#__PURE__*/function () {
     key: "id",
     value: function id() {
       if (this.loggedIn()) {
-        var payload = session_token.payload(_AppStorage__WEBPACK_IMPORTED_MODULE_1__["default"].getToken());
+        var payload = _Token__WEBPACK_IMPORTED_MODULE_0__["default"].payload(_AppStorage__WEBPACK_IMPORTED_MODULE_1__["default"].getToken());
         return payload.sub;
       }
+    }
+  }, {
+    key: "own",
+    value: function own(id) {
+      return this.id() == id;
+    }
+  }, {
+    key: "admin",
+    value: function admin() {
+      return this.id() == 1;
     }
   }]);
 
@@ -39038,11 +39077,7 @@ var render = function () {
           _c(
             "router-link",
             { attrs: { to: "/signup" } },
-            [
-              _c("v-btn", { attrs: { color: "blue", type: "" } }, [
-                _vm._v("Register"),
-              ]),
-            ],
+            [_c("v-btn", { attrs: { color: "blue" } }, [_vm._v("Sign Up")])],
             1
           ),
         ],
@@ -39141,11 +39176,7 @@ var render = function () {
             : _vm._e(),
           _vm._v(" "),
           _c("v-text-field", {
-            attrs: {
-              label: "Confirm Password",
-              type: "password",
-              required: "",
-            },
+            attrs: { label: "Password", type: "password", required: "" },
             model: {
               value: _vm.form.password_confirmation,
               callback: function ($$v) {
@@ -39156,17 +39187,13 @@ var render = function () {
           }),
           _vm._v(" "),
           _c("v-btn", { attrs: { color: "green", type: "submit" } }, [
-            _vm._v("Register"),
+            _vm._v("Sign Up"),
           ]),
           _vm._v(" "),
           _c(
             "router-link",
             { attrs: { to: "/login" } },
-            [
-              _c("v-btn", { attrs: { color: "blue" } }, [
-                _vm._v("Back to Login"),
-              ]),
-            ],
+            [_c("v-btn", { attrs: { color: "blue" } }, [_vm._v("Login")])],
             1
           ),
         ],

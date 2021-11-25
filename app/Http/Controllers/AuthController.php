@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
-use App\Http\Models\User;
+use App\Models\User;
 use App\Http\Requests\SignupRequest;
 
 class AuthController extends Controller
