@@ -13,7 +13,7 @@ import User from './Helpers/User'
 
 window.Vue = require('vue').default;
 window.User = User;
-User.hastoken();
+User.hasToken();
 
 
 /**

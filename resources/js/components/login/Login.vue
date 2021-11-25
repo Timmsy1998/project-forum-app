@@ -19,6 +19,13 @@
     type="submit"
     >Login</v-btn>
 
+    <router-link to="/signup">
+        <v-btn
+    color="blue"
+    type=""
+    >Register</v-btn>
+    </router-link>
+
 </v-form>
 </v-container>
 </template>
