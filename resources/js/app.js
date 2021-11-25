@@ -9,8 +9,11 @@ require('./bootstrap');
 import Vue from 'vue'
 import vuetify from './vuetify'
 import router from './Router/router'
+import User from './Helpers/User'
 
 window.Vue = require('vue').default;
+window.User = User;
+User.hastoken();
 
 
 /**
