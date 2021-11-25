@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Login from '../components/login/Login'
 
-vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
     { path: '/login', component: Login }
@@ -9,7 +10,9 @@ const routes = [
 ]
 
 const router = new VueRouter({
-    routes
+    routes,
+    hashbang: false,
+    mode: 'history'
 })
 
 export default router

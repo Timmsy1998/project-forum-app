@@ -1,14 +1,10 @@
 <template>
-  <v-card
-    color="grey lighten-4"
-    flat
-    height="200px"
-    tile
-  >
     <v-toolbar dense>
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
 
-      <v-toolbar-title>James Timms</v-toolbar-title>
+      <router-link to ="/forum">
+      <v-toolbar-title>View The Forum</v-toolbar-title>
+      </router-link>
 
       <v-spacer></v-spacer>
 
@@ -25,11 +21,13 @@
 
     <v-tooltip bottom>
       <template v-slot:activator="{ on, attrs }">
+          <router-link to="/login">
       <v-btn icon>
         <v-icon                  
         v-bind="attrs"
           v-on="on">mdi-account</v-icon>
       </v-btn>
+          </router-link>
             </template>
       <span>Login</span>
     </v-tooltip>
@@ -47,7 +45,6 @@
     </v-tooltip>
 
     </v-toolbar>
-  </v-card>
 </template>
 
 <script>
