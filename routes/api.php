@@ -20,4 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResources([
     'question' => QuestionController::class,
+    'category' => CategoryController::class,
 ]);

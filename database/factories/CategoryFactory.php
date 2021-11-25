@@ -23,7 +23,7 @@ class CategoryFactory extends Factory
     public function definition()
     {
         $name = $this->faker->name;
-        $slug = Str::slug($name);
+        $slug = Str::slug($name, '-');
         return [
             'name' => $name,
             'slug' => $slug,
