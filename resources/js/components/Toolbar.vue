@@ -1,48 +1,29 @@
 <template>
     <v-toolbar dense>
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
 
-      <router-link to ="/forum">
-      <v-toolbar-title>View The Forum</v-toolbar-title>
-      </router-link>
-
+      <v-toolbar-title>James Timms Forum App</v-toolbar-title>
+      
       <v-spacer></v-spacer>
 
+      <router-link
+      v-for="item in items"
+      :key="item.title"
+      :to="item.to"
+      :icon="item.icon"
+      v-if="item.show">
       <v-tooltip bottom>
-      <template v-slot:activator="{ on, attrs }">
-      <v-btn icon>
-        <v-icon
-                  v-bind="attrs"
-          v-on="on">mdi-magnify</v-icon>
-      </v-btn>
-      </template>
-      <span>Search The Forum</span>
-    </v-tooltip>
-
-    <v-tooltip bottom>
-      <template v-slot:activator="{ on, attrs }">
-          <router-link to="/login">
-      <v-btn icon>
-        <v-icon                  
-        v-bind="attrs"
-          v-on="on">mdi-account</v-icon>
-      </v-btn>
-          </router-link>
-            </template>
-      <span>Login</span>
-    </v-tooltip>
-
-    <v-tooltip bottom>
-      <template v-slot:activator="{ on, attrs }">
-      <v-btn icon>
-        <v-icon
-         v-bind="attrs"
-          v-on="on"
-        >mdi-dots-vertical</v-icon>
-      </v-btn>
-                  </template>
-      <span>View All Categories</span>
-    </v-tooltip>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn icon>
+            <v-icon
+            v-bind="attrs"
+            v-on="on">
+            {{item.icon}}
+            </v-icon>
+          </v-btn>
+        </template>
+        <span>{{item.title}}</span>
+      </v-tooltip>
+      </router-link>
 
     </v-toolbar>
 </template>
@@ -50,6 +31,22 @@
 <script>
 
 export default {
+  data(){
+    return {
+      items: [
+        {title : 'Forum', to:'/forum', icon:'mdi-forum', show:true},
+        {title : 'Login', to:'/login', icon:'mdi-login', show: !User.loggedIn()},
+        {title : 'Logout', to:'/logout', icon:'mdi-logout', show: User.loggedIn()},
+        {title : 'Quick Post', to:'/ask', icon:'mdi-chat-plus', show: User.loggedIn()},
+        {title : 'View All Categories', to:'/category', icon:'mdi-shape', show: User.loggedIn()},
+      ]
+    }
+  },
+  created(){
+    EventBus.$on('logout', () => {
+      User.logout()
+    })
+  }
 
 }
 </script>

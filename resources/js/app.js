@@ -13,6 +13,7 @@ import User from './Helpers/User'
 
 window.Vue = require('vue').default;
 window.User = User;
+window.EventBus = new Vue();
 User.hasToken();
 
 
