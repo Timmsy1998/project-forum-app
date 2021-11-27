@@ -2,16 +2,18 @@
     <v-container fluid grid-list-md>
         <v-layout row wrap>
             <v-flex xs8>
-                <br />
                 <question v-for="question in questions" :key="question.path" :question=question></question>
             </v-flex>
-            sidebar
+            <v-flex xs4>
+                <app-sidebar></app-sidebar>
+            </v-flex>
         </v-layout>
     </v-container>
 </template>
 
 <script>
     import question from './question'
+    import AppSidebar from './AppSidebar'
     export default {
         data() {
             return {
@@ -19,7 +21,8 @@
             }
         },
         components: {
-            question
+            question,
+            AppSidebar
         },
         created() {
             axios.get('/api/question')

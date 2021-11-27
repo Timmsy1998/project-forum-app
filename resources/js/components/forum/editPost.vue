@@ -1,5 +1,5 @@
 <template>
-    <v-card elevation="2" outlined shaped>
+    <v-card class="mt-4" elevation="2" outlined shaped>
         <v-container fluid>
             <v-card-title>
                 Editing Post - {{data.title}}

@@ -1,5 +1,5 @@
 <template>
-    <v-card elevation="2" outlined shaped>
+    <v-card class="mt-4" elevation="2" outlined shaped>
         <v-card-title primary-title>
             <div>
                 {{question.title}}
@@ -7,7 +7,7 @@
         </v-card-title>
         <v-card-subtitle>
             <div>
-                Posted By {{question.user}}<br /> {{question.created_at}}
+                Posted By {{question.user}} <br /> {{question.created_at}}
             </div>
         </v-card-subtitle>
         <v-card-text>
