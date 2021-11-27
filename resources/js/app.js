@@ -6,15 +6,33 @@
 
 require('./bootstrap');
 
-import Vue from 'vue'
-import vuetify from './vuetify'
-import router from './Router/router'
-import User from './Helpers/User'
+import Vue from 'vue';
+import vuetify from './vuetify';
+import router from './Router/router';
+import User from './Helpers/User';
+import VueMarkdownEditor from '@kangc/v-md-editor';
+import '@kangc/v-md-editor/lib/style/base-editor.css';
+import vuepressTheme from '@kangc/v-md-editor/lib/theme/vuepress.js';
+import '@kangc/v-md-editor/lib/theme/style/vuepress.css';
+import Prism from 'prismjs';
+import 'prismjs/components/prism-json';
+import enUS from '@kangc/v-md-editor/lib/lang/en-US';
+var marked = require('marked');
+
+
+VueMarkdownEditor.use(vuepressTheme, {
+  Prism,
+});
+
+VueMarkdownEditor.lang.use('en-US', enUS);
 
 window.Vue = require('vue').default;
+Vue.use(VueMarkdownEditor);
 window.User = User;
 window.EventBus = new Vue();
 User.hasToken();
+
+
 
 
 /**
@@ -39,5 +57,7 @@ Vue.component('AppHome', require('./components/AppHome.vue').default);
  const app = new Vue({
     el: '#app',
     router,
+    marked,
     vuetify
 });
+
