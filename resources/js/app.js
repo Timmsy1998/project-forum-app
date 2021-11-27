@@ -17,7 +17,7 @@ import '@kangc/v-md-editor/lib/theme/style/vuepress.css';
 import Prism from 'prismjs';
 import 'prismjs/components/prism-json';
 import enUS from '@kangc/v-md-editor/lib/lang/en-US';
-var marked = require('marked');
+import { marked } from 'marked';
 
 
 VueMarkdownEditor.use(vuepressTheme, {
@@ -28,6 +28,7 @@ VueMarkdownEditor.lang.use('en-US', enUS);
 
 window.Vue = require('vue').default;
 Vue.use(VueMarkdownEditor);
+window.marked = marked;
 window.User = User;
 window.EventBus = new Vue();
 User.hasToken();
@@ -57,7 +58,6 @@ Vue.component('AppHome', require('./components/AppHome.vue').default);
  const app = new Vue({
     el: '#app',
     router,
-    marked,
     vuetify
 });
 

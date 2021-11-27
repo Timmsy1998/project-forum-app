@@ -1,28 +1,45 @@
 <template>
-  <show-question
-    :data = question
-    >
-
-  </show-question>
+  <div v-if="question">
+    <edit-post v-if="editing" :data=question></edit-post>
+    <show-question v-else :data=question>
+    </show-question>
+  </div>
 </template>
 
 <script>
-import ShowQuestion from './ShowQuestion'
-export default {
-    components: {ShowQuestion},
-
-    data(){
-        return {
-            question:null,
-        }
+  import ShowQuestion from './ShowQuestion'
+  import EditPost from './editPost'
+  export default {
+    components: {
+      ShowQuestion,
+      EditPost
     },
+    data() {
+      return {
+        question: null,
+        editing: false,
+      }
+    },
+    created() {
+      this.listen()
+      this.getQuestion()
+    },
+    methods: {
+      listen() {
+        EventBus.$on('startEditing', () => {
+          this.editing = true
+        })
 
-    created(){
+        EventBus.$on('cancelEditing', () => {
+          this.editing = false
+        })
+      },
+      getQuestion() {
         axios.get(`/api/question/${this.$route.params.slug}`)
-        .then(res => this.question = res.data.data)
+          .then(res => this.question = res.data.data)
+      }
     }
-
-}
+  }
 </script>
 
 <style>
