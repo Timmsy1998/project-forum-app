@@ -1,0 +1,1 @@
+export const sortCategories = (categories) => categories.sort((a, b) => a.name.localeCompare(b.name))

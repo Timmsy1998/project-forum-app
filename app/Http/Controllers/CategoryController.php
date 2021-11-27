@@ -6,6 +6,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Resources\CategoryResource;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -42,7 +43,7 @@ class CategoryController extends Controller
         $category->name = $request->name;
         $category->slug = str_slug($request->name);
         $category->save();
-        return response(null, Response::HTTP_CREATED);
+        return response($request->name, Response::HTTP_CREATED);
     }
 
     /**
@@ -82,7 +83,7 @@ class CategoryController extends Controller
                 'slug'=>Str::slug($request->name, '-')
             ]
         );
-        return response(null, Response:HTTP_ACCEPTED);
+        return response(null, Response::HTTP_ACCEPTED);
     }
 
     /**
