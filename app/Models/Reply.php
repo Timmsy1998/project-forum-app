@@ -9,6 +9,15 @@ class Reply extends Model
 {
     use HasFactory;
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function($reply){
+            $reply->user_id = auth()->id();
+        });
+    }
+
     protected $guarded = [];
 
     public function question()

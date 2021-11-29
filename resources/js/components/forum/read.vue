@@ -3,16 +3,26 @@
     <edit-post v-if="editing" :data=question></edit-post>
     <show-question v-else :data=question>
     </show-question>
+
+    <replies :question="question"></replies>
+
+    <new-reply :questionSlug="question.slug"></new-reply>
+    
   </div>
 </template>
 
 <script>
   import ShowQuestion from './ShowQuestion'
   import EditPost from './editPost'
+  import Replies from '../reply/replies'
+  import NewReply from '../reply/newReply'
+
   export default {
     components: {
       ShowQuestion,
-      EditPost
+      EditPost,
+      Replies,
+      NewReply
     },
     data() {
       return {

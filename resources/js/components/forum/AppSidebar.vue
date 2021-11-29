@@ -23,7 +23,7 @@ export default {
     },
     created(){
         axios.get('/api/category')
-        .then(res => this.categories = res.data.data)
+        .then(res => this.categories = res.data.data.sort((a, b) => a.name.localeCompare(b.name)))
     }
 
 }

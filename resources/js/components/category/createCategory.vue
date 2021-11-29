@@ -1,5 +1,5 @@
 <template>
-    <v-card class="mt-4 mb-4" elevation="2" outlined shaped>
+    <v-card class="mt-4" elevation="2" outlined shaped>
         <v-container fluid>
             <v-card-title>
                 Create a new Category
@@ -50,6 +50,9 @@
             }
         },
         created() {
+            if(!User.admin()){
+                this.$router.push('/forum')
+            }
             axios.get('/api/category')
                 .then(res => this.categories = res.data.data.sort((a, b) => a.name.localeCompare(b.name)))
         },

@@ -9,6 +9,9 @@
             <div>
                 Posted By {{question.user}} <br /> {{question.created_at}}
             </div>
+            <div>
+                {{question.reply_count}} Replies
+                </div>
         </v-card-subtitle>
         <v-card-text>
             <div>{{question.body}}</div>
@@ -20,6 +23,7 @@
                 </div>
             </router-link>
         </v-card-actions>
+        <v-spacer></v-spacer>
     </v-card>
 </template>
 

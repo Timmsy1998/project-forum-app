@@ -38,7 +38,7 @@ export default {
         {title : 'Login', to:'/login', icon:'mdi-login', show: !User.loggedIn()},
         {title : 'Logout', to:'/logout', icon:'mdi-logout', show: User.loggedIn()},
         {title : 'Quick Post', to:'/create', icon:'mdi-chat-plus', show: User.loggedIn()},
-        {title : 'View All Categories', to:'/category', icon:'mdi-shape', show: User.loggedIn()},
+        {title : 'Category Manager', to:'/category', icon:'mdi-shape', show: User.admin()},
       ]
     }
   },
