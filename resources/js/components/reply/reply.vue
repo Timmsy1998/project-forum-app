@@ -3,6 +3,8 @@
         <v-container fluid>
             <v-card-title>
                 {{data.user}}
+                <v-spacer></v-spacer>
+                <like :content = "data"></like>
             </v-card-title>
             <v-card-subtitle>
                 Said {{data.created_at}}
@@ -23,13 +25,15 @@
 
 <script>
     import EditReply from './editReply'
+    import Like from '../likes/like'
     import {
         marked
     } from 'marked';
     export default {
         props: ['data', 'index'],
         components: {
-            EditReply
+            EditReply,
+            Like
         },
         data() {
             return {

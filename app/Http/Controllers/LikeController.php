@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Like;
+use App\Models\Reply;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -28,7 +29,7 @@ class LikeController extends Controller
 
     public function UnLikeIt(Reply $reply)
     {
-        $reply->like()->where(['user_id', auth()->id()])->first()->delete();
+        $reply->like()->where('user_id', auth()->id())->first()->delete();
 
     }
     /**
